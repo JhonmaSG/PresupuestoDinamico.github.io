@@ -2,6 +2,10 @@
 
 Una aplicación web desarrollada en **HTML**, **CSS** y **JavaScript** para gestionar presupuestos personales. Permite registrar ingresos y egresos, y proporciona un resumen del balance financiero.
 
+# Acceder al aplicativo
+
+https://jhonmasg.github.io/PresupuestoDinamico.github.io/
+
 ## Características
 
 - **Gestión de Ingresos y Egresos**: Añade, edita y elimina registros de ingresos y egresos.
