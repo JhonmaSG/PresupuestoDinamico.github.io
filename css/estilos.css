@@ -288,7 +288,7 @@ h2 {
     display: none;
 }
 
-.footer {
+footer {
     position: fixed; /* Hace que se quede en la parte inferior */
     bottom: 0;
     width: 100%;
