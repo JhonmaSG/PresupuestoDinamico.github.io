@@ -1,8 +1,15 @@
+:root {
+    --verdigris: #28b9b5ff;
+    --tomato: #ff5049ff;
+    --berkeley-blue: #1d3557ff;
+    --goldenrod: #d5a021ff;
+    --honolulu-blue: #0471a6ff;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Open Sans;
 }
 
 .limpiarEstilos::after {
@@ -33,26 +40,27 @@ body {
     padding-bottom: 100px;
     color: #fff;
     background: url(fondo.png), #7b4397;
-    background: url(fondo.png), -webkit-gradient(linear, right top, left top, from(#7b4397), to(#4024dc));
-    background: url(fondo.png), linear-gradient(to left, #7b4397, #4024dc)
+    background: url(fondo.png), -webkit-gradient(linear, right top, left top, from(#1D3557), to(#4024dc));
+    background: url(fondo.png), linear-gradient(to left, #1D3557, #0471A6)
 }
 
 /* Botón de imprimir */
 .imprimir_btn { 
-    font-size: 16px; 
-    background-color: #e4bc38; 
+    font-size: 16px;
     color: #fff; 
     border: none; 
     padding: 10px 20px; 
     cursor: pointer; 
-    border-radius: 5px; 
-    transition: background-color 1s, transform 1s, padding 1s; 
+    border-radius: 5px;
+    background-color: #D5A021;
+    transition: background-color 0.2s, transform 0.2s, padding 0.2s; 
     display: inline-block; margin-top: 20px; 
-} 
+}
 
 .imprimir_btn:hover { 
-    background-color: #dfac06; 
-    padding: 10px 25px; 
+    background-color: #FFD670;
+    color: #313638;
+    padding: 10px 25px;
 } 
 
 .imprimir_btn:active { 
@@ -60,8 +68,8 @@ body {
 }
 
 .imprimir_btn:focus { 
-    outline: none; 
-    border: 1px solid #1f8a8a;
+    outline: none;
+    border: 1px solid #555;
 }
 
 /* Presupuesto */
@@ -75,8 +83,9 @@ body {
 }
 
 .presupuesto_titulo{
-    font-size: 20px;
+    font-size: 25px;
     text-align: center;
+    ;
     margin-bottom: 10px;
     font-weight: 300;
 }
@@ -138,7 +147,7 @@ body {
 .agregar {
     padding: 14px;
     border-bottom: 1px solid #e7e7e7;
-    background-color: #f7f7f7;
+    background-color: #f2f2f2;
 }
 
 .agregar_contenedor {
@@ -277,6 +286,34 @@ h2 {
     vertical-align: middle;
     line-height: 1;
     display: none;
+}
+
+.footer {
+    position: fixed; /* Hace que se quede en la parte inferior */
+    bottom: 0;
+    width: 100%;
+    background-color: var(--berkeley-blue);
+    color: white;
+    background-image: var(--gradient-bottom);
+    background-repeat: no-repeat;
+    background-size: 100% 10px;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    z-index: 10; /* footer por encima del contenido */
+}
+
+@media print {
+    /* Esconde el modal al imprimir */
+    .modal {
+        display: none !important;
+    }
+
+    /* Esconde el fondo oscuro al activar el modal */
+    .modal-backdrop {
+        display: none !important;
+    }
 }
 
 .elemento_eliminar--btn:focus { outline: none; }

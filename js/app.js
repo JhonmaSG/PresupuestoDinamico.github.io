@@ -4,8 +4,6 @@ import { Egreso } from "./Egreso.js";
 const ingresos = [];
 const egresos = [];
 
-
-
 let cargarApp = () => {
   cargarCabecero();
   cargarIngresos();
@@ -55,7 +53,16 @@ const formatoPorcentaje = (valor) => {
   });
 };
 
-const imprimirPresupuesto = () => { window.print(); };
+const mostrarModal = () => {
+  const modalImpresion = new bootstrap.Modal(
+    document.getElementById("modalImpresion")
+  );
+  modalImpresion.show();
+};
+
+document.getElementById("btnImprimir").addEventListener("click", () => {
+  window.print();
+});
 
 const cargarIngresos = () => {
   let ingresosHTML = "";
@@ -78,7 +85,9 @@ const crearIngresoHTML = (ingreso) => {
                         <div class="elemento_eliminar">
                             <button class="elemento_eliminar--btn">
                                 <ion-icon name="close-circle-outline"
-                                onclick="eliminarIngreso(${ingreso.id})"></ion-icon>
+                                onclick="eliminarIngreso(${
+                                  ingreso.id
+                                })"></ion-icon>
                             </button>
                         </div>
                     </div>
@@ -88,11 +97,11 @@ const crearIngresoHTML = (ingreso) => {
 };
 
 const eliminarIngreso = (id) => {
-  let indiceEliminar = ingresos.findIndex( ingreso => ingreso.id === id);
+  let indiceEliminar = ingresos.findIndex((ingreso) => ingreso.id === id);
   ingresos.splice(indiceEliminar, 1); //(id, elementos a eliminar)
   cargarCabecero();
   cargarIngresos();
-}
+};
 
 const cargarEgresos = () => {
   let egresosHTML = "";
@@ -108,7 +117,9 @@ const crearEgresoHTML = (egreso) => {
       <div class="elemento_descripcion">${egreso.descripcion}</div>
         <div class="derecha limpiarEstilos">
           <div class="elemento_valor">- ${formatoMoneda(egreso.valor)}</div>
-          <div class="elemento_porcentaje">${formatoPorcentaje(egreso.valor/totalEgresos())}</div>
+          <div class="elemento_porcentaje">${formatoPorcentaje(
+            egreso.valor / totalEgresos()
+          )}</div>
           <div class="elemento_eliminar">
           <button class="elemento_eliminar--btn">
             <ion-icon name="close-circle-outline" 
@@ -122,33 +133,73 @@ const crearEgresoHTML = (egreso) => {
 };
 
 const eliminarEgreso = (id) => {
-  let indiceEliminar = egresos.findIndex( egreso => egreso.id === id);
+  let indiceEliminar = egresos.findIndex((egreso) => egreso.id === id);
   egresos.splice(indiceEliminar, 1); //(id, elementos a eliminar)
   cargarCabecero();
   cargarEgresos();
-}
+};
 
+// Función principal para agregar datos
 const agregarDato = () => {
   let forma = document.forms['forma'];
-  let tipo = forma['tipo'];
+  let tipo = forma['tipo'].value;
   let descripcion = forma['descripcion'];
-  let valor = forma['valor'];
-  if( descripcion.value != '' && valor.value != ''){
-    if(tipo.value === 'ingreso'){
-      ingresos.push(new Ingreso(descripcion.value, +valor.value));
+  let valor = parseFloat(forma['valor'].value);
+  let caja = document.getElementById('contenedorAgregar');
+
+  if (descripcion.value !== '' && !isNaN(valor)) {
+    if (!validarValor(tipo, valor)) return; // Validar el valor según el tipo
+
+    // Actualizar el fondo y los datos
+    cambiarColorFondo(tipo, caja);
+
+    if (tipo === 'ingreso') {
+      ingresos.push(new Ingreso(descripcion.value, valor));
       cargarCabecero();
       cargarIngresos();
-    }else if(tipo.value === 'egreso'){
-      egresos.push(new Egreso(descripcion.value, +valor.value));
+    } else if (tipo === 'egreso') {
+      egresos.push(new Egreso(descripcion.value, valor));
       cargarCabecero();
       cargarEgresos();
     }
+
+    // Limpiar campos
+    descripcion.value = '';
+    forma['valor'].value = '';
+    descripcion.focus();
   }
-}
+};
+
+// Función cambiar color
+const cambiarColorFondo = (tipo) => {
+  const inputs = document.querySelectorAll('.agregar_descripcion, .agregar_valor');
+  const select = document.querySelector('.agregar_tipo');
+  
+  inputs.forEach(input => {
+    input.style.backgroundColor = tipo === 'ingreso' ? '#d1f0f0' : '#ffd1d1';
+  });
+   select.style.backgroundColor = tipo === 'ingreso' ? '#d1f0f0' : '#ffd1d1';
+};
+
+// Función validación
+const validarValor = (tipo, valor) => {
+  if (valor < 0) {
+    alert(`El valor de un ${tipo} no puede ser negativo.`);
+    return false;
+  }
+  return true;
+};
+
+// Evento para cambio de tipo en tiempo real
+document.addEventListener('DOMContentLoaded', () => {
+  const tipo = document.getElementById('tipo');
+  tipo.addEventListener('change', () => cambiarColorFondo(tipo.value));
+});
+
 
 window.cargarApp = cargarApp;
 window.formatoPorcentaje = formatoPorcentaje;
 window.eliminarIngreso = eliminarIngreso;
 window.eliminarEgreso = eliminarEgreso;
 window.agregarDato = agregarDato;
-window.imprimirPresupuesto = imprimirPresupuesto;
+window.mostrarModal = mostrarModal;
